@@ -18,6 +18,19 @@ import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPacka
 
 public class TestMain {
 
+    public static SummaryGeneratingListener runGlobalTests() {
+        SummaryGeneratingListener listener = new SummaryGeneratingListener();
+        LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
+                .selectors(selectPackage("test.solutions_tests"))
+                .selectors(selectClass("GlobalTaskTest"))
+                .build();
+        Launcher launcher = LauncherFactory.create();
+        launcher.registerTestExecutionListeners(listener);
+        launcher.execute(request);
+        return listener;
+    }
+
+
     public static SummaryGeneratingListener runTests() {
         SummaryGeneratingListener listener = new SummaryGeneratingListener();
         LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
@@ -32,10 +45,15 @@ public class TestMain {
 
     public static void main(String[] args) {
         TestFailService failService = new TestFailService();
+        SummaryGeneratingListener globalListener = runGlobalTests();
         SummaryGeneratingListener listener = runTests();
+        TestExecutionSummary globalSummary = globalListener.getSummary();
         TestExecutionSummary summary = listener.getSummary();
+        List<FailedTestCase> globalFails = failService.formatFailures(globalSummary.getFailures());
         List<FailedTestCase> fails = failService.formatFailures(summary.getFailures());
 //        failService.printFails(fails);
+        System.out.println("GLOBAL FAILS:");
+        failService.printFails(globalFails);
         System.out.println("Points won:");
         System.out.println(CustomTestExtension.pointsSum);
 

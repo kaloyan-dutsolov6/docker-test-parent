@@ -33,6 +33,7 @@ public class GlobalTaskTest {
             divisionFuture.get(5, TimeUnit.SECONDS);
         } catch (TimeoutException ex) {
             System.out.println("TIMEOUT");
+            Assertions.assertEquals("Application", "Timeout");
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -49,6 +50,7 @@ public class GlobalTaskTest {
             multiplyFuture.get(5, TimeUnit.SECONDS);
         } catch (TimeoutException ex) {
             System.out.println("TIMEOUT");
+            Assertions.assertEquals("Application", "Timeout");
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         } finally {
