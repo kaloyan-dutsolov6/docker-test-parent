@@ -46,11 +46,11 @@ public class TestMain {
     public static void main(String[] args) {
         TestFailService failService = new TestFailService();
         SummaryGeneratingListener globalListener = runGlobalTests();
-        SummaryGeneratingListener listener = runTests();
+//        SummaryGeneratingListener listener = runTests();
         TestExecutionSummary globalSummary = globalListener.getSummary();
-        TestExecutionSummary summary = listener.getSummary();
+//        TestExecutionSummary summary = listener.getSummary();
         List<FailedTestCase> globalFails = failService.formatFailures(globalSummary.getFailures());
-        List<FailedTestCase> fails = failService.formatFailures(summary.getFailures());
+//        List<FailedTestCase> fails = failService.formatFailures(summary.getFailures());
 //        failService.printFails(fails);
         System.out.println("GLOBAL FAILS:");
         failService.printFails(globalFails);
@@ -60,7 +60,8 @@ public class TestMain {
 
         HttpService httpService = new HttpService();
         try {
-            httpService.sendTestResult(args[0], CustomTestExtension.pointsSum, fails);
+//            httpService.sendTestResult(args[0], CustomTestExtension.pointsSum, fails);
+            httpService.sendTestResult(args[0], CustomTestExtension.pointsSum, globalFails);
         } catch (IOException e) {
             e.printStackTrace();
         }
