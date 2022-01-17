@@ -21,7 +21,7 @@ public class TestMain {
     public static SummaryGeneratingListener runGlobalTests() {
         SummaryGeneratingListener listener = new SummaryGeneratingListener();
         LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
-                .selectors(selectPackage("test.solutions_tests"))
+                .selectors(selectPackage("test.parent"))
                 .selectors(selectClass("GlobalTaskTest"))
                 .build();
         Launcher launcher = LauncherFactory.create();
