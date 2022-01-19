@@ -2,8 +2,10 @@ package test.parent;
 
 public class MultiplyTask {
     public static int multiply(int x, int y) {
-         if(y==-67){
-            x=67;
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         return x * y;
     }
