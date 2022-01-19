@@ -46,7 +46,6 @@ public class MultiplyTaskTest {
         } catch (TimeoutException ex) {
             multiplyFuture.cancel(true);
             Assertions.fail(MULTIPLY_TIMEOUT);
-            actual = 0;
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
