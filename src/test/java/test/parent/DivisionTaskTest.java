@@ -57,7 +57,7 @@ public class DivisionTaskTest {
         int expected = args[2];
         int actual = 0;
 
-        ExecutorService executor = Executors.newCachedThreadPool();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
         Callable<Integer> divisionTask = () -> DivisionTask.divide(args[0], args[1]);
         Future<Integer> divisionFuture = executor.submit(divisionTask);
 
@@ -65,10 +65,12 @@ public class DivisionTaskTest {
         try {
             actual = divisionFuture.get(2, TimeUnit.SECONDS);
         } catch (TimeoutException ex) {
+            divisionFuture.cancel(true);
             Assertions.fail(DIVISION_TIMEOUT);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
+        executor.shutdownNow();
         //Assert
         Assert.assertEquals(expected, actual);
     }

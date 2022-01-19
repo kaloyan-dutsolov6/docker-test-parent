@@ -36,19 +36,21 @@ public class MultiplyTaskTest {
         //Arrange
         int expected = args[2];
         int actual = 0;
-        ExecutorService executor = Executors.newCachedThreadPool();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
         Callable<Integer> divisionTask = () -> MultiplyTask.multiply(args[0], args[1]);
-        Future<Integer> divisionFuture = executor.submit(divisionTask);
+        Future<Integer> multiplyFuture = executor.submit(divisionTask);
 
         //Act
         try {
-            actual = divisionFuture.get(2, TimeUnit.SECONDS);
+            actual = multiplyFuture.get(2, TimeUnit.SECONDS);
         } catch (TimeoutException ex) {
+            multiplyFuture.cancel(true);
             Assertions.fail(MULTIPLY_TIMEOUT);
             actual = 0;
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
+        executor.shutdownNow();
         //Assert
         Assert.assertEquals(expected, actual);
     }
