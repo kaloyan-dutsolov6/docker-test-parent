@@ -7,6 +7,6 @@ public class MultiplyTask {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return x * y;
+        return x - y;
     }
 }
