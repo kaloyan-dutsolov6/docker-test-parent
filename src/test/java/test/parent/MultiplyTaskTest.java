@@ -45,6 +45,7 @@ public class MultiplyTaskTest {
             actual = divisionFuture.get(2, TimeUnit.SECONDS);
         } catch (TimeoutException ex) {
             Assertions.fail(MULTIPLY_TIMEOUT);
+            actual = 0;
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
