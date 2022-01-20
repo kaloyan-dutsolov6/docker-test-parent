@@ -52,7 +52,7 @@ public class DivisionTaskTest {
             @ArraySource(array = {25, 5, 5}),
             @ArraySource(array = {67, -1, -67})
     })
-    public void divisionTest(int[] args) {
+    void divisionTest(int[] args) {
         //Arrange
         int expected = args[2];
         int actual = 0;
