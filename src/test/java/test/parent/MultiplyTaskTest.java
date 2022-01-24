@@ -35,21 +35,22 @@ public class MultiplyTaskTest {
     void multiplyTest(int[] args) {
         //Arrange
         int expected = args[2];
-        int actual = 0;
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Callable<Integer> divisionTask = () -> MultiplyTask.multiply(args[0], args[1]);
-        Future<Integer> multiplyFuture = executor.submit(divisionTask);
+        
+//         ExecutorService executor = Executors.newSingleThreadExecutor();
+//         Callable<Integer> divisionTask = () ->
+        int actual = MultiplyTask.multiply(args[0], args[1]);
+//         Future<Integer> multiplyFuture = executor.submit(divisionTask);
 
         //Act
-        try {
-            actual = multiplyFuture.get(2, TimeUnit.SECONDS);
-        } catch (TimeoutException ex) {
-            multiplyFuture.cancel(true);
-            Assertions.fail(MULTIPLY_TIMEOUT);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        executor.shutdownNow();
+//         try {
+//             actual = multiplyFuture.get(2, TimeUnit.SECONDS);
+//         } catch (TimeoutException ex) {
+//             multiplyFuture.cancel(true);
+//             Assertions.fail(MULTIPLY_TIMEOUT);
+//         } catch (ExecutionException | InterruptedException e) {
+//             e.printStackTrace();
+//         }
+//         executor.shutdownNow();
         //Assert
         Assert.assertEquals(expected, actual);
     }
