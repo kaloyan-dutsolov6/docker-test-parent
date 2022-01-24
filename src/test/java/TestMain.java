@@ -40,46 +40,6 @@ public class TestMain {
     }
 
 
-//    public static void main(String[] args) {
-//        TestFailService failService = new TestFailService();
-//        SummaryGeneratingListener globalListener = runGlobalTests();
-//        TestExecutionSummary globalSummary = globalListener.getSummary();
-//        List<FailedTestCase> globalFails = failService.formatFailures(globalSummary.getFailures());
-//
-//        if (globalFails.isEmpty()) {
-//            SummaryGeneratingListener listener = runTests();
-//            TestExecutionSummary summary = listener.getSummary();
-//            List<FailedTestCase> fails = failService.formatFailures(summary.getFailures());
-//            failService.printFails(fails);
-//
-//            System.out.println("Points won:");
-//            System.out.println(CustomTestExtension.pointsSum);
-//
-//            HttpService httpService = new HttpService();
-//            try {
-//                httpService.sendTestResult(args[0], CustomTestExtension.pointsSum, fails);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        } else {
-//            failService.printFails(globalFails);
-//            System.out.println("Points won:");
-//            System.out.println(CustomTestExtension.pointsSum);
-//
-//            HttpService httpService = new HttpService();
-//            try {
-//                httpService.sendTestResult(args[0], CustomTestExtension.pointsSum, globalFails);
-////            httpService.sendTestResult("kaloyan_dutsolov6", CustomTestExtension.pointsSum, fails);
-////            httpService.sendTestResult("kaloyan_dutsolov6", CustomTestExtension.pointsSum, globalFails);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//    }
-//}
-
-
     public static void main(String[] args) {
         TestFailService failService = new TestFailService();
         SummaryGeneratingListener listener = runTests();
@@ -93,7 +53,6 @@ public class TestMain {
         HttpService httpService = new HttpService();
         try {
             httpService.sendTestResult(args[0], CustomTestExtension.pointsSum, fails);
-//            httpService.sendTestResult(args[0], CustomTestExtension.pointsSum, globalFails);
         } catch (IOException e) {
             e.printStackTrace();
         }
