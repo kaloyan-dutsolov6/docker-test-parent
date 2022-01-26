@@ -53,7 +53,7 @@ public class TestMain {
         HttpService httpService = new HttpService();
         try {
             System.getenv().entrySet().forEach(stringStringEntry -> System.out.println(stringStringEntry.getKey() + " " + stringStringEntry.getValue()));
-
+            System.out.println(args[0] + " " + args[1] + " " + args[2]);
             httpService.sendTestResult(args[0], CustomTestExtension.pointsSum, fails);
         } catch (IOException e) {
             e.printStackTrace();
