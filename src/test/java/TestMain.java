@@ -16,6 +16,8 @@ import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPacka
 
 public class TestMain {
 
+    private static final String HOSTNAME = "HOSTNAME";
+
 //    public static SummaryGeneratingListener runGlobalTests() {
 //        SummaryGeneratingListener listener = new SummaryGeneratingListener();
 //        LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
@@ -52,8 +54,7 @@ public class TestMain {
 
         HttpService httpService = new HttpService();
         try {
-            System.getenv().entrySet().forEach(stringStringEntry -> System.out.println(stringStringEntry.getKey() + " " + stringStringEntry.getValue()));
-            String containerId = System.getenv().get("HOSTNAME");//.entrySet().forEach(stringStringEntry -> System.out.println(stringStringEntry.getKey() + " " + stringStringEntry.getValue()));
+            String containerId = System.getenv().get(HOSTNAME);
             httpService.sendTestResult(args[0], CustomTestExtension.pointsSum, fails, containerId);
         } catch (IOException e) {
             e.printStackTrace();
