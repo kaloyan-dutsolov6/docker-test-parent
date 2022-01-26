@@ -9,6 +9,7 @@ import test.annotations.test_base.ArraySource;
 import test.annotations.test_base.ArraySources;
 import test.extensions.CustomTestExtension;
 
+import java.time.Duration;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -16,6 +17,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 
 @ExtendWith(CustomTestExtension.class)
 public class DivisionTaskTest {
