@@ -52,6 +52,7 @@ public class TestMain {
 
         HttpService httpService = new HttpService();
         try {
+            System.getenv().entrySet().forEach(stringStringEntry -> System.out.println(stringStringEntry.getKey() + " " + stringStringEntry.getValue()));
             String containerId = System.getenv().get("HOSTNAME");//.entrySet().forEach(stringStringEntry -> System.out.println(stringStringEntry.getKey() + " " + stringStringEntry.getValue()));
             httpService.sendTestResult(args[0], CustomTestExtension.pointsSum, fails, containerId);
         } catch (IOException e) {
