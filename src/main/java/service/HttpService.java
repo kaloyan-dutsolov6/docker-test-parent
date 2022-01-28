@@ -36,7 +36,6 @@ public class HttpService {
     }
 
     private JSONObject buildJsonTestsResultObject(String username, int points, List<FailedTestCase> failedTestCases, String containerId) {
-        System.out.println("here " + containerId);
         JSONObject testsResult = new JSONObject();
         testsResult.putIfAbsent("username", username);
         testsResult.putIfAbsent("points", points);
