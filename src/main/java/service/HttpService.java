@@ -23,8 +23,8 @@ public class HttpService {
         this.accessTokenUtil = new AccessTokenUtil();
     }
 
-    public void sendTestResult(String username, int points, List<FailedTestCase> failedTestCases) throws IOException {
-        JSONObject testsResult = buildJsonTestsResultObject(username, points, failedTestCases);
+    public void sendTestResult(String username, int points, List<FailedTestCase> failedTestCases, String containerId) throws IOException {
+        JSONObject testsResult = buildJsonTestsResultObject(username, points, failedTestCases, containerId);
         RequestBody body = buildRequestBody(testsResult);
         Request request = buildRequest(URL, body);
 
@@ -39,12 +39,13 @@ public class HttpService {
                 .build();
     }
 
-    private JSONObject buildJsonTestsResultObject(String username, int points, List<FailedTestCase> failedTestCases) {
+    private JSONObject buildJsonTestsResultObject(String username, int points, List<FailedTestCase> failedTestCases, String containerId) {
         JSONObject testsResult = new JSONObject();
         testsResult.putIfAbsent("username", username);
         testsResult.putIfAbsent("points", points);
         JSONArray failedCases = generateFailedTestCasesJsonArray(failedTestCases);
         testsResult.putIfAbsent("failedTestCases", failedCases);
+        testsResult.putIfAbsent("containerId", containerId);
 
         return testsResult;
     }
