@@ -17,23 +17,14 @@ import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPacka
 public class TestMain {
 
     private static final String HOSTNAME = "HOSTNAME";
-
-//    public static SummaryGeneratingListener runGlobalTests() {
-//        SummaryGeneratingListener listener = new SummaryGeneratingListener();
-//        LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
-//                .selectors(selectPackage("test.global"))
-//                .build();
-//        Launcher launcher = LauncherFactory.create();
-//        launcher.registerTestExecutionListeners(listener);
-//        launcher.execute(request);
-//        return listener;
-//    }
+    private static final String SANDBOX_TEST = "test.sandbox";
+    private static final String POINT_TESTS = "test.parent";
 
 
-    public static SummaryGeneratingListener runTests() {
+    public static SummaryGeneratingListener runTests(String testPackage) {
         SummaryGeneratingListener listener = new SummaryGeneratingListener();
         LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
-                .selectors(selectPackage("test.parent"))
+                .selectors(selectPackage(testPackage))
                 .build();
         Launcher launcher = LauncherFactory.create();
         launcher.registerTestExecutionListeners(listener);
@@ -41,10 +32,9 @@ public class TestMain {
         return listener;
     }
 
-
     public static void main(String[] args) {
         TestFailService failService = new TestFailService();
-        SummaryGeneratingListener listener = runTests();
+        SummaryGeneratingListener listener = runTests(POINT_TESTS);
         TestExecutionSummary summary = listener.getSummary();
         List<FailedTestCase> fails = failService.formatFailures(summary.getFailures());
         failService.printFails(fails);
@@ -55,10 +45,25 @@ public class TestMain {
         HttpService httpService = new HttpService();
         try {
             String containerId = System.getenv().get(HOSTNAME);
-            httpService.sendTestResult(args[0], CustomTestExtension.pointsSum, fails, containerId);
+            List<FailedTestCase> maliciousTests = isNotMalicious();
+            if (maliciousTests.isEmpty()) {
+                System.out.println(CustomTestExtension.pointsSum + " " + containerId);
+                httpService.sendTestResult(args[0], CustomTestExtension.pointsSum, fails, containerId);
+            }else{
+                System.out.println(CustomTestExtension.caseCnt + " " + containerId);
+                httpService.sendTestResult(args[0], 0, maliciousTests, containerId);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    private static List<FailedTestCase> isNotMalicious() {
+        TestFailService failService = new TestFailService();
+        SummaryGeneratingListener listener = runTests(SANDBOX_TEST);
+        TestExecutionSummary summary = listener.getSummary();
+        List<FailedTestCase> fails = failService.formatFailures(summary.getFailures());
+        failService.printFails(fails);
+        return fails;
+    }
 }

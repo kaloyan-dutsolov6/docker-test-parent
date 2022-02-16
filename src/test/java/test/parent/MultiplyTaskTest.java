@@ -1,7 +1,6 @@
 package test.parent;
 
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,8 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 @ExtendWith(CustomTestExtension.class)
 public class MultiplyTaskTest {
 
-    public static final String MULTIPLY_TIMEOUT = "Multiply Timeout";
-
     @Points(value = 1)
     @ParameterizedTest
     @ArraySources(arrays = {
@@ -29,32 +26,13 @@ public class MultiplyTaskTest {
             @ArraySource(array = {-1, -67, 67})
     })
     void multiplyTest(int[] args) {
-                //Arrange
+        //Arrange
         int expected = args[2];
 
         //Act and Assert
         assertTimeoutPreemptively(
                 Duration.ofSeconds(2),
-                () -> Assert.assertEquals(expected, MultiplyTask.multiply(args[0], args[1]))
+                () -> Assertions.assertEquals(expected, MultiplyTask.multiply(args[0], args[1]))
         );
-//         //Arrange
-//         int expected = args[2];
-//         int actual = 0;
-//         ExecutorService executor = Executors.newSingleThreadExecutor();
-//         Callable<Integer> divisionTask = () -> MultiplyTask.multiply(args[0], args[1]);
-//         Future<Integer> multiplyFuture = executor.submit(divisionTask);
-
-//         //Act
-//         try {
-//             actual = multiplyFuture.get(2, TimeUnit.SECONDS);
-//         } catch (TimeoutException ex) {
-//             multiplyFuture.cancel(true);
-//             Assertions.fail(MULTIPLY_TIMEOUT);
-//         } catch (ExecutionException | InterruptedException e) {
-//             e.printStackTrace();
-//         }
-//         executor.shutdownNow();
-//         //Assert
-//         Assert.assertEquals(expected, actual);
     }
 }
