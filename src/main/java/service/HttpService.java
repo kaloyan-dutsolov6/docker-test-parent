@@ -1,5 +1,6 @@
 package service;
 
+import util.AccessTokenUtil;
 import model.FailedTestCase;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -14,14 +15,16 @@ import java.util.List;
 public class HttpService {
 
     private static final String URL = "http:host.docker.internal:8081/test/result";
-    private OkHttpClient httpClient;
+    private final OkHttpClient httpClient;
+    private final AccessTokenUtil accessTokenUtil;
 
     public HttpService() {
         this.httpClient = new OkHttpClient();
+        this.accessTokenUtil = new AccessTokenUtil();
     }
 
-    public void sendTestResult(String username, int points, List<FailedTestCase> failedTestCases, String containerId) throws IOException {
-        JSONObject testsResult = buildJsonTestsResultObject(username, points, failedTestCases, containerId);
+    public void sendTestResult(String username, int points, List<FailedTestCase> failedTestCases) throws IOException {
+        JSONObject testsResult = buildJsonTestsResultObject(username, points, failedTestCases);
         RequestBody body = buildRequestBody(testsResult);
         Request request = buildRequest(URL, body);
 
@@ -31,17 +34,17 @@ public class HttpService {
     private Request buildRequest(String url, RequestBody body) {
         return new Request.Builder()
                 .url(url)
+                .header("Authorization", "Bearer " + accessTokenUtil.getAccessToken())
                 .post(body)
                 .build();
     }
 
-    private JSONObject buildJsonTestsResultObject(String username, int points, List<FailedTestCase> failedTestCases, String containerId) {
+    private JSONObject buildJsonTestsResultObject(String username, int points, List<FailedTestCase> failedTestCases) {
         JSONObject testsResult = new JSONObject();
         testsResult.putIfAbsent("username", username);
         testsResult.putIfAbsent("points", points);
         JSONArray failedCases = generateFailedTestCasesJsonArray(failedTestCases);
         testsResult.putIfAbsent("failedTestCases", failedCases);
-        testsResult.putIfAbsent("containerId", containerId);
 
         return testsResult;
     }
@@ -61,5 +64,4 @@ public class HttpService {
         MediaType json = MediaType.parse("application/json; charset=utf-8");
         return RequestBody.create(testsResult.toString(), json);
     }
-
 }
