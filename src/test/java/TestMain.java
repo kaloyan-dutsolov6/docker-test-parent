@@ -45,13 +45,13 @@ public class TestMain {
         HttpService httpService = new HttpService();
         try {
             String containerId = System.getenv().get(HOSTNAME);
-            List<FailedTestCase> maliciousTests = isNotMalicious();
-            if (maliciousTests.isEmpty()) {
-                System.out.println(CustomTestExtension.pointsSum + " " + containerId);
+            if (fails.isEmpty()) {
+                List<FailedTestCase> maliciousTests = isNotMalicious();
+                if (!maliciousTests.isEmpty()) {
+                    httpService.sendTestResult(args[0], 0, maliciousTests, containerId);
+                }
+            } else {
                 httpService.sendTestResult(args[0], CustomTestExtension.pointsSum, fails, containerId);
-            }else{
-                System.out.println(CustomTestExtension.caseCnt + " " + containerId);
-                httpService.sendTestResult(args[0], 0, maliciousTests, containerId);
             }
         } catch (IOException e) {
             e.printStackTrace();
