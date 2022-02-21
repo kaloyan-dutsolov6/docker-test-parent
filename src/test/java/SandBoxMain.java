@@ -29,7 +29,7 @@ public class SandBoxMain {
         return listener;
     }
 
-    public static boolean main(String[] args) {
+    public static void main(String[] args) {
 //        HttpService httpService = new HttpService();
 
         TestFailService failService = new TestFailService();
@@ -37,7 +37,11 @@ public class SandBoxMain {
         TestExecutionSummary summary = listener.getSummary();
         List<FailedTestCase> fails = failService.formatFailures(summary.getFailures());
         failService.printFails(fails);
-        return fails.isEmpty();
+        if (fails.isEmpty()){
+            System.exit(1);
+        } else{
+            System.exit(0);
+        }
 //        if(!fails.isEmpty()){
 //            String containerId = System.getenv().get(HOSTNAME);
 //            try {
