@@ -11,12 +11,15 @@ import test.parent.DivisionTask;
 import test.parent.MultiplyTask;
 
 import java.security.Policy;
+import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 
 @ExtendWith(CustomTestExtension.class)
 public class SandboxTest {
 
     @BeforeAll
-    static void beforeAll(){
+    static void beforeAll() {
         Policy.setPolicy(new SandboxSecurityPolicy());
         System.setSecurityManager(new SecurityManager());
     }
@@ -30,8 +33,11 @@ public class SandboxTest {
             @ArraySource(array = {25, 5, 5}),
             @ArraySource(array = {67, -1, -67})
     })
-    void divisionSandbox(int[] args){
-        DivisionTask.divide(args[0], args[1]);
+    void divisionSandbox(int[] args) {
+        assertTimeoutPreemptively(
+                Duration.ofSeconds(2),
+                () -> DivisionTask.divide(args[0], args[1])
+        );
     }
 
     @Points()
@@ -43,7 +49,10 @@ public class SandboxTest {
             @ArraySource(array = {5, 5, 25}),
             @ArraySource(array = {-1, -67, 67})
     })
-    void multiplySandbox(int[] args){
-        MultiplyTask.multiply(args[0], args[1]);
+    void multiplySandbox(int[] args) {
+        assertTimeoutPreemptively(
+                Duration.ofSeconds(2),
+                () -> MultiplyTask.multiply(args[0], args[1])
+        );
     }
 }

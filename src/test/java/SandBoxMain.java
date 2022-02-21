@@ -6,11 +6,7 @@ import org.junit.platform.launcher.core.LauncherFactory;
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
 import org.junit.platform.launcher.listeners.TestExecutionSummary;
 import service.TestFailService;
-import test.parent.DivisionTask;
-import test.parent.MultiplyTask;
-import test.sandbox.SandboxSecurityPolicy;
 
-import java.security.Policy;
 import java.util.List;
 
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage;

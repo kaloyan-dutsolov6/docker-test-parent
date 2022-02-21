@@ -1,6 +1,5 @@
 package test.sandbox;
 
-import java.io.FilePermission;
 import java.lang.reflect.ReflectPermission;
 import java.security.PermissionCollection;
 import java.security.Permissions;
@@ -26,14 +25,14 @@ public class SandboxSecurityPolicy extends Policy {
 
     private PermissionCollection pluginPermissions() {
         Permissions permissions = new Permissions();
-        permissions.add(new FilePermission("test/parent/*", "read,write"));
         return permissions;
     }
 
     private PermissionCollection applicationPermissions() {
         Permissions permissions = new Permissions();
-        permissions.add(new FilePermission("test/parent/*", "read,write"));
         permissions.add(new ReflectPermission("suppressAccessChecks"));
+        permissions.add(new RuntimePermission("modifyThread"));
+        permissions.add(new RuntimePermission("getStackTrace"));
         return permissions;
     }
 }
