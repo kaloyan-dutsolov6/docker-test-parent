@@ -5,14 +5,17 @@ import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
 import org.junit.platform.launcher.listeners.TestExecutionSummary;
+import service.HttpService;
 import service.TestFailService;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage;
 
 public class SandBoxMain {
 
+    private static final String HOSTNAME = "HOSTNAME";
     private static final String SANDBOX_TEST = "test.sandbox";
 
     private static SummaryGeneratingListener runTests(String testPackage) {
@@ -26,11 +29,24 @@ public class SandBoxMain {
         return listener;
     }
 
-    public static void main(String[] args) {
+    public static boolean main(String[] args) {
+//        HttpService httpService = new HttpService();
+
         TestFailService failService = new TestFailService();
         SummaryGeneratingListener listener = runTests(SANDBOX_TEST);
         TestExecutionSummary summary = listener.getSummary();
         List<FailedTestCase> fails = failService.formatFailures(summary.getFailures());
         failService.printFails(fails);
+        return fails.isEmpty();
+//        if(!fails.isEmpty()){
+//            String containerId = System.getenv().get(HOSTNAME);
+//            try {
+//                httpService.sendTestResult(args[0], 0, fails, containerId);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        } else {
+//            TestMain.main(args);
+//        }
     }
 }
