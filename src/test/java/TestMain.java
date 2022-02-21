@@ -45,25 +45,25 @@ public class TestMain {
         HttpService httpService = new HttpService();
         try {
             String containerId = System.getenv().get(HOSTNAME);
-            if (fails.isEmpty()) {
-                List<FailedTestCase> maliciousTests = isNotMalicious();
-                if (!maliciousTests.isEmpty()) {
-                    httpService.sendTestResult(args[0], 0, maliciousTests, containerId);
-                }
-            } else {
+//             if (fails.isEmpty()) {
+//                 List<FailedTestCase> maliciousTests = isNotMalicious();
+//                 if (!maliciousTests.isEmpty()) {
+//                     httpService.sendTestResult(args[0], 0, maliciousTests, containerId);
+//                 }
+//             } else {
                 httpService.sendTestResult(args[0], CustomTestExtension.pointsSum, fails, containerId);
-            }
+//             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static List<FailedTestCase> isNotMalicious() {
-        TestFailService failService = new TestFailService();
-        SummaryGeneratingListener listener = runTests(SANDBOX_TEST);
-        TestExecutionSummary summary = listener.getSummary();
-        List<FailedTestCase> fails = failService.formatFailures(summary.getFailures());
-        failService.printFails(fails);
-        return fails;
-    }
+//     private static List<FailedTestCase> isNotMalicious() {
+//         TestFailService failService = new TestFailService();
+//         SummaryGeneratingListener listener = runTests(SANDBOX_TEST);
+//         TestExecutionSummary summary = listener.getSummary();
+//         List<FailedTestCase> fails = failService.formatFailures(summary.getFailures());
+//         failService.printFails(fails);
+//         return fails;
+//     }
 }
