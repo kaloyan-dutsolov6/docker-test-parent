@@ -30,27 +30,22 @@ public class SandBoxMain {
     }
 
     public static void main(String[] args) {
-//        HttpService httpService = new HttpService();
+        HttpService httpService = new HttpService();
 
         TestFailService failService = new TestFailService();
         SummaryGeneratingListener listener = runTests(SANDBOX_TEST);
         TestExecutionSummary summary = listener.getSummary();
         List<FailedTestCase> fails = failService.formatFailures(summary.getFailures());
         failService.printFails(fails);
-        if (fails.isEmpty()){
-            System.exit(1);
-        } else{
-            System.exit(0);
+        try {
+            if (!fails.isEmpty()) {
+                String containerId = System.getenv().get(HOSTNAME);
+                httpService.sendTestResult(args[0], 0, fails, containerId);
+
+                throw new RuntimeException("Your code may be malicious or have an infinite loop!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-//        if(!fails.isEmpty()){
-//            String containerId = System.getenv().get(HOSTNAME);
-//            try {
-//                httpService.sendTestResult(args[0], 0, fails, containerId);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        } else {
-//            TestMain.main(args);
-//        }
     }
 }
