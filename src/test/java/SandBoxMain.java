@@ -40,7 +40,7 @@ public class SandBoxMain {
         try {
             if (!fails.isEmpty()) {
                 String containerId = System.getenv().get(HOSTNAME);
-                httpService.sendTestResult(args[0], 0, fails, containerId);
+                httpService.sendTestResult(args[0], -1, fails, containerId);
 
                 throw new RuntimeException("Your code may be malicious or have an infinite loop!");
             }
